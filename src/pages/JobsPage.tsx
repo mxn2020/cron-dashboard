@@ -1,48 +1,39 @@
-import { LayoutDashboard, Plus, Play, Pause, MoreVertical } from "lucide-react";
-const jobs = [
-    { id: "1", name: "Daily Database Backup", schedule: "0 0 * * *", lastRun: "2 hours ago", status: "success", active: true },
-    { id: "2", name: "Sync Intercom Users", schedule: "*/15 * * * *", lastRun: "5 mins ago", status: "failed", active: true },
-    { id: "3", name: "Weekly Digest Email", schedule: "0 9 * * 1", lastRun: "3 days ago", status: "success", active: false },
-    { id: "4", name: "Clear Temp Files", schedule: "0 * * * *", lastRun: "45 mins ago", status: "success", active: true }
-];
-export default function JobsPage() {
-    return (<div style={{ padding: "var(--space-8)", maxWidth: 1200 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-6)" }}>
-            <h1 style={{ fontSize: "var(--font-size-2xl)", fontWeight: 800, display: "flex", alignItems: "center", gap: "var(--space-2)" }}><LayoutDashboard style={{ color: "var(--color-accent-primary)" }} /> Jobs Overview</h1>
-            <button className="btn btn-primary"><Plus size={16} /> Create Job</button>
-        </div>
+import { Clock, Plus, Play, Pause, Trash2 } from "lucide-react";
+import { Button, Card, Badge } from "@geenius-ui/react-css";
 
-        <div className="card">
-            <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead>
-                    <tr style={{ borderBottom: "1px solid var(--color-border)", background: "var(--color-bg-secondary)" }}>
-                        <th style={{ textAlign: "left", padding: "16px", fontSize: "12px", textTransform: "uppercase", color: "var(--color-text-secondary)", fontWeight: 700 }}>Job Name</th>
-                        <th style={{ textAlign: "left", padding: "16px", fontSize: "12px", textTransform: "uppercase", color: "var(--color-text-secondary)", fontWeight: 700 }}>Schedule</th>
-                        <th style={{ textAlign: "left", padding: "16px", fontSize: "12px", textTransform: "uppercase", color: "var(--color-text-secondary)", fontWeight: 700 }}>Status</th>
-                        <th style={{ textAlign: "left", padding: "16px", fontSize: "12px", textTransform: "uppercase", color: "var(--color-text-secondary)", fontWeight: 700 }}>Last Run</th>
-                        <th style={{ textAlign: "right", padding: "16px", fontSize: "12px", textTransform: "uppercase", color: "var(--color-text-secondary)", fontWeight: 700 }}>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {jobs.map(j => (<tr key={j.id} style={{ borderBottom: "1px solid var(--color-border)" }}>
-                        <td style={{ padding: "16px" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-                                <div style={{ width: 8, height: 8, borderRadius: "50%", background: j.active ? "var(--color-success)" : "var(--color-text-tertiary)" }}></div>
-                                <span style={{ fontWeight: 600 }}>{j.name}</span>
-                            </div>
-                        </td>
-                        <td style={{ padding: "16px" }}><span className="badge badge-amber mono" style={{ fontSize: 12, textTransform: "none" }}>{j.schedule}</span></td>
-                        <td style={{ padding: "16px" }}><span className={`badge ${j.status === "success" ? "badge-green" : "badge-red"}`}>{j.status}</span></td>
-                        <td style={{ padding: "16px" }}><span style={{ fontSize: "13px", color: "var(--color-text-secondary)" }}>{j.lastRun}</span></td>
-                        <td style={{ padding: "16px", textAlign: "right" }}>
-                            <div style={{ display: "flex", justifyContent: "flex-end", gap: "var(--space-1)" }}>
-                                <button className="btn btn-ghost btn-sm" style={{ padding: 8 }}>{j.active ? <Pause size={16} /> : <Play size={16} />}</button>
-                                <button className="btn btn-ghost btn-sm" style={{ padding: 8 }}><MoreVertical size={16} /></button>
-                            </div>
-                        </td>
-                    </tr>))}
-                </tbody>
-            </table>
+const jobs = [
+    { id: "1", name: "Daily Database Backup", schedule: "0 0 * * *", nextRun: "in 12 hours", status: "Active" },
+    { id: "2", name: "Sync Analytics Data", schedule: "0 * * * *", nextRun: "in 45 mins", status: "Active" },
+    { id: "3", name: "Clear Temp Files", schedule: "0 2 * * *", nextRun: "in 14 hours", status: "Paused" },
+    { id: "4", name: "Send Weekly Reports", schedule: "0 8 * * 1", nextRun: "in 2 days", status: "Active" }
+];
+
+export default function JobsPage() {
+    return (<div style={{ padding: "var(--space-8)", maxWidth: 1000 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-6)" }}>
+            <h1 style={{ fontSize: "var(--font-size-2xl)", fontWeight: 700, display: "flex", alignItems: "center", gap: "var(--space-2)" }}><Clock style={{ color: "var(--color-accent-primary)" }} /> Cron Jobs</h1>
+            <Button variant="primary" icon={<Plus size={16} />}>New Job</Button>
+        </div>
+        <div style={{ display: "grid", gap: "var(--space-4)" }}>
+            {jobs.map(j => (<Card key={j.id} padding="md" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderLeft: j.status === "Active" ? "3px solid var(--color-success)" : "3px solid var(--color-border)" }}>
+                <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)", marginBottom: 4 }}>
+                        <h3 style={{ fontSize: "var(--font-size-lg)", fontWeight: 700 }}>{j.name}</h3>
+                        <Badge variant={j.status === "Active" ? "success" : "secondary"}>{j.status}</Badge>
+                    </div>
+                    <div style={{ display: "flex", gap: "var(--space-4)", fontSize: "13px", color: "var(--color-text-secondary)", alignItems: "center" }}>
+                        <span className="mono" style={{ background: "var(--color-bg-secondary)", padding: "2px 8px", borderRadius: 4 }}>{j.schedule}</span>
+                        <span>Next run: <strong>{j.nextRun}</strong></span>
+                    </div>
+                </div>
+                <div style={{ display: "flex", gap: "var(--space-2)" }}>
+                    {j.status === "Active" ?
+                        <Button variant="ghost" size="sm" icon={<Pause size={16} />} /> :
+                        <Button variant="ghost" size="sm" icon={<Play size={16} />} />
+                    }
+                    <Button variant="ghost" size="sm" style={{ color: "var(--color-danger)" }} icon={<Trash2 size={16} />} />
+                </div>
+            </Card>))}
         </div>
     </div>);
 }
