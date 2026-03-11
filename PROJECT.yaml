@@ -1,5 +1,6 @@
-id: 629d8705-4f4a-4c2d-a3e2-9eebe5d2c755
 name: cron-dashboard
+project_scope: main
+project_type: standalone
 description: React + TypeScript + Vite
 tier: prototype
 lane: oss
@@ -9,5 +10,6 @@ stack: [typescript, react, convex, vite]
 repo: "https://github.com/mxn2020/cron-dashboard"
 deploy_url: null
 last_active: 2026-02-24
-tags: []
-notes: 
+tags: [cron, scheduling, dashboard, monitoring, jobs, automation, tasks]
+notes: null
+id: 629d8705-4f4a-4c2d-a3e2-9eebe5d2c755
